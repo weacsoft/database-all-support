@@ -1,4 +1,5 @@
 package com.weacsoft.sqlite.eloquent;
+
 import com.weacsoft.sqlite.query.SqliteBuilder;
 import gaarason.database.contract.connection.GaarasonDataSource;
 import gaarason.database.eloquent.Model;

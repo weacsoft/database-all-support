@@ -1,4 +1,5 @@
 package com.weacsoft.oracle.eloquent;
+
 import com.weacsoft.oracle.query.OracleBuilder;
 import gaarason.database.contract.connection.GaarasonDataSource;
 import gaarason.database.eloquent.Model;

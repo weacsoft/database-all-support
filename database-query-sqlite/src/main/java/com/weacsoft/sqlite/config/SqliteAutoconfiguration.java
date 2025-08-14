@@ -14,6 +14,7 @@ public class SqliteAutoconfiguration implements GaarasonAutoconfiguration {
                     public QueryBuilderConfig execute(Class<QueryBuilderConfig> clazz) throws Throwable {
                         return new SqliteQueryBuilderConfig();
                     }
+
                     // 更高的优先级, 很关键
                     @Override
                     public Integer getOrder() {
