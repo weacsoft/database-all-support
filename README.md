@@ -38,14 +38,34 @@
 </dependency>
 ```
 
+Spring版本（只需要引入这个，会自动引入上面的）：
+
+```xml
+<dependency>
+    <groupId>com.github.weacsoft.database-all-support</groupId>
+    <artifactId>database-query-oracle-spring</artifactId>
+    <version>{latest-version}</version>
+</dependency>
+```
+
 ### Sqlite数据库支持
 
-引入Oracle数据库支持
+引入Sqlite数据库支持
 
 ```xml
 <dependency>
     <groupId>com.github.weacsoft.database-all-support</groupId>
     <artifactId>database-query-sqlite</artifactId>
+    <version>{latest-version}</version>
+</dependency>
+```
+
+Spring版本（只需要引入这个，会自动引入上面的）：
+
+```xml
+<dependency>
+    <groupId>com.github.weacsoft.database-all-support</groupId>
+    <artifactId>database-query-sqlite-spring</artifactId>
     <version>{latest-version}</version>
 </dependency>
 ```
