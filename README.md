@@ -11,6 +11,7 @@
 * [公共配置 Public Configuration](#公共配置)
 * [Oracle数据库支持 Oracle Database Support](#Oracle数据库支持)
 * [Sqlite数据库支持 Sqlite Database Support](#Sqlite数据库支持)
+* [迁移 Migration](#迁移)
 * [通用模型 Generic Model](#通用模型)
 
 ### 公共配置
@@ -68,6 +69,57 @@ Spring版本（只需要引入这个，会自动引入上面的）：
     <artifactId>database-query-sqlite-spring</artifactId>
     <version>{latest-version}</version>
 </dependency>
+```
+
+### 迁移
+
+引入：
+
+```xml
+
+<dependency>
+    <groupId>com.github.weacsoft.database-all-support</groupId>
+    <artifactId>database-migration</artifactId>
+    <version>{latest-version}</version>
+</dependency>
+```
+
+使用Laravel的Migration，仿造的Java语法，可以进行数据表的生成和删除、文件的生成和删除。
+
+简明使用方式可见下面与com.weacsoft.migration.Main.java
+
+生成迁移文件：
+
+```java
+import com.weacsoft.migration.runner.MigrationGenerator;
+
+MigrationGenerator.generate("项目输出目录","包名",MigrationGenerator.MigrationType.CREATE, "类名");
+```
+
+执行迁移：
+```java
+MySqlCompiler compiler;
+BaseSchema schema;
+MigrationRunner runner;
+compiler = new SqliteCompiler();
+//迁移生成类
+schema = new ClassSchema("项目输出目录", "模型包名");
+runner = new MigrationRunner(schema, "模型目录");
+runner.upDoing();
+```
+
+解释：
+
+BaseSchema：具体执行的迁移操作。SQLSchema就是对数据库操作，使用jdbc的方式。ClassSchema就是对类的操作。可以自己继承BaseSchema进行额外扩展。
+
+MigrationRunner：具体的执行器，只有这个东西能执行。主要功能是把迁移和执行器导入后，把迁移文件的源代码在内存编译成类并送给schema调用。
+
+MySqlCompiler：如果使用SQLSchema，它需要传入对应数据库的编译类。目前只有MySqlCompiler和SqliteCompiler。新增自行继承MySqlCompiler即可。
+
+回滚
+```java
+//上面一样
+runner.downDoing();
 ```
 
 ### 通用模型
