@@ -42,15 +42,15 @@ public class SQLSchema extends BaseSchema {
     /**
      * 具体执行SQL
      *
-     * @param sql
+     * @param sql sq语句
+     * @param params 参数
      */
     private void executeSql(String sql, Object... params) {
-        try (Connection connection = this.connection;
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
                 statement.setObject(i + 1, params[i]);
             }
-            statement.execute(sql);
+            statement.execute();
         } catch (Exception e) {
             throw new SQLRuntimeException("执行迁移SQL失败: " + sql, e);
         }
@@ -59,7 +59,8 @@ public class SQLSchema extends BaseSchema {
     /**
      * 具体执行SQL
      *
-     * @param sql
+     * @param sql sq语句
+     * @param columns 参数数组
      */
     private void executeSql(String sql, Collection<Object> columns) {
         executeSql(sql, columns.toArray());
@@ -93,13 +94,11 @@ public class SQLSchema extends BaseSchema {
     public boolean upStart() {
         List<Map<String, Object>> list = queryList(compiler.showTable());
         AtomicBoolean hasMigrationTable = new AtomicBoolean(false);
-        list.forEach(stringObjectMap -> {
-            stringObjectMap.forEach((key, value) -> {
-                if (value.equals(MIGRATIONS_TABLE)) {
-                    hasMigrationTable.set(true);
-                }
-            });
-        });
+        list.forEach(stringObjectMap -> stringObjectMap.forEach((key, value) -> {
+            if (value.equals(MIGRATIONS_TABLE)) {
+                hasMigrationTable.set(true);
+            }
+        }));
         if (!hasMigrationTable.get()) {
             //不存在则执行迁移
             migration.schema = this;
@@ -116,6 +115,7 @@ public class SQLSchema extends BaseSchema {
      * 迁移后做什么
      */
     public void upFinish() {
+        super.upFinish();
     }
 
     /**
@@ -146,7 +146,7 @@ public class SQLSchema extends BaseSchema {
     /**
      * 获得最后一条数据
      *
-     * @return
+     * @return 最后一条迁移
      */
     public MigrationRunner.Column getLast() {
 
@@ -165,7 +165,7 @@ public class SQLSchema extends BaseSchema {
     /**
      * 获得所有数据库的数据
      *
-     * @return
+     * @return 获得已经执行的迁移
      */
     public List<MigrationRunner.Column> getExistsList() {
         List<MigrationRunner.Column> columns = new ArrayList<>();
@@ -185,8 +185,8 @@ public class SQLSchema extends BaseSchema {
     /**
      * 获得某一步所有的操作
      *
-     * @param batch
-     * @return
+     * @param batch 第几步
+     * @return 获得第几步所有的迁移名
      */
     public List<String> getBatchList(int batch) {
         List<String> batchList = new ArrayList<>();
@@ -257,7 +257,7 @@ public class SQLSchema extends BaseSchema {
     /**
      * 严格模式，是否比较所有迁移
      *
-     * @return
+     * @return 是否严格模式
      */
     public boolean strictMode() {
         return strictMode;
@@ -265,14 +265,16 @@ public class SQLSchema extends BaseSchema {
 
     @Override
     public int getBatch() {
+        if (column == null) {
+            return 1;
+        }
         return column.batch;
     }
 
     //执行查询SQL，组装成List<Map<String, Object>>形式
     private List<Map<String, Object>> queryList(String sql) {
         List<Map<String, Object>> list = new ArrayList<>();
-        try (Connection connection = this.connection;
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
