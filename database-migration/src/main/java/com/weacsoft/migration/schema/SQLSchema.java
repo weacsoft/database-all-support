@@ -109,6 +109,15 @@ public class SQLSchema extends BaseSchema {
         return true;
     }
 
+    /**
+     * 迁移前做什么
+     */
+    public boolean downStart() {
+        //获得最后一个数据
+        column = getLast();
+        return true;
+    }
+
     private MigrationRunner.Column column;
 
     /**
