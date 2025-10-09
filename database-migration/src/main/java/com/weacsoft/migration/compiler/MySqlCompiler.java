@@ -95,14 +95,14 @@ public class MySqlCompiler {
         }
         //是否有默认值（非空才可以设置默认值）
         if (!column.nullable && column.defaultValue != null) {
-            string.append("DEFAULT `");
+            string.append("DEFAULT \"");
             string.append(column.defaultValue);
-            string.append("` ");
+            string.append("\" ");
         }
         if (column.comment != null) {
-            string.append("COMMENT '");
+            string.append("COMMENT \"");
             string.append(column.comment);
-            string.append("' ");
+            string.append("\" ");
         }
         string.append(",");
         return string.toString();
