@@ -3,7 +3,6 @@ package com.weacsoft.migration.runner;
 import com.weacsoft.migration.model.Migration;
 import com.weacsoft.migration.model.MigrationAnnotation;
 import com.weacsoft.migration.util.MigrationScanner;
-import com.weacsoft.migration.compiler.MySqlCompiler;
 import com.weacsoft.migration.schema.BaseSchema;
 import gaarason.database.logging.Log;
 import gaarason.database.logging.LogFactory;
@@ -20,8 +19,6 @@ public class MigrationRunner {
 
     private static final Log log = LogFactory.getLog(MigrationRunner.class);
 
-
-    ;
 
     /**
      * 构造迁移管理器

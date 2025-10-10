@@ -10,11 +10,11 @@ import java.util.List;
 
 public class SqliteGaarasonDataSourceBuilder {
     public static GaarasonDataSource build(DataSource masterDataSource) {
-        return build((DataSource) masterDataSource, (Container) ContainerBootstrap.build().autoBootstrap());
+        return build(masterDataSource, ContainerBootstrap.build().autoBootstrap());
     }
 
     public static GaarasonDataSource build(List<DataSource> masterDataSourceList) {
-        return build((List) masterDataSourceList, (Container) ContainerBootstrap.build().autoBootstrap());
+        return build(masterDataSourceList, ContainerBootstrap.build().autoBootstrap());
     }
 
     public static GaarasonDataSource build(DataSource masterDataSource, Container container) {

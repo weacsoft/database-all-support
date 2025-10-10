@@ -9,13 +9,13 @@ import com.weacsoft.migration.schema.ClassSchema;
 
 public class Main {
     //项目目录
-    private static String PROJECT_OUTPUT_DIR = "./src/main/java";
+    private static final String PROJECT_OUTPUT_DIR = "./src/main/java";
     //迁移文件目录
-    private static String MIGRATION_DIRECTORY = PROJECT_OUTPUT_DIR + "/com/weacsoft/migration/";
+    private static final String MIGRATION_DIRECTORY = PROJECT_OUTPUT_DIR + "/com/weacsoft/migration/";
     //模型包名
-    private static String MODELS_PACKAGE_NAME = "com.weacsoft.models";
+    private static final String MODELS_PACKAGE_NAME = "com.weacsoft.models";
     //迁移包名
-    private static String MIGRATION_PACKAGE_NAME = "com.weacsoft.migration";
+    private static final String MIGRATION_PACKAGE_NAME = "com.weacsoft.migration";
 
     public static void main(String[] args) {
         //下面是相关演示

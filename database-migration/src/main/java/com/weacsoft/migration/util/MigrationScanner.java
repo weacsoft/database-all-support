@@ -105,7 +105,7 @@ public class MigrationScanner {
         if (file.exists() && file.isFile()) {
             //读取源代码
             String sourceCode = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-            if (sourceCode == null || sourceCode.isEmpty()) {
+            if (sourceCode.isEmpty()) {
                 throw new IOException("无法读取Java文件或文件内容为空: " + file.getAbsolutePath());
             }
             // 处理源代码，拼接成标准的类名加包名

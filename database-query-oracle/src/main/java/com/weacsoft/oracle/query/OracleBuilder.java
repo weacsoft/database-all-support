@@ -46,8 +46,8 @@ public class OracleBuilder<T, K> extends AbstractBuilder<OracleBuilder<T, K>, T,
         //拦截，将默认的`作为分割，适配Oracle使用'进行分割
         sqlPart = sqlPart.replace("`", "");
         if (!ObjectUtils.isEmpty(sqlPart)) {
-            this.getGrammar().set(Grammar.SQLPartType.FROM, sqlPart, (Collection) null);
-            this.getGrammar().set(Grammar.SQLPartType.TABLE, sqlPart, (Collection) null);
+            this.getGrammar().set(Grammar.SQLPartType.FROM, sqlPart, null);
+            this.getGrammar().set(Grammar.SQLPartType.TABLE, sqlPart, null);
         }
 
         return this;
@@ -55,7 +55,7 @@ public class OracleBuilder<T, K> extends AbstractBuilder<OracleBuilder<T, K>, T,
 
     public String toSql(SqlType sqlType) {
         return this.toSql(sqlType, (sql, parameters) -> {
-            return String.format(StringUtils.replace(sql, " ? ", "\'%s\'"), parameters.toArray());
+            return String.format(StringUtils.replace(sql, " ? ", "'%s'"), parameters.toArray());
         });
     }
 }

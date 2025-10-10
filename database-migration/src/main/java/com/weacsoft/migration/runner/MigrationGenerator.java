@@ -77,37 +77,31 @@ public class MigrationGenerator {
             tableName = tableName + "s";
         }
         // 基础导入语句
-        StringBuilder importSb = new StringBuilder();
-        importSb.append("import ").append(libPackageName).append(".Migration;\n");
-        importSb.append("import ").append(libPackageName).append(".MigrationAnnotation;\n");
+        return "import " + libPackageName + ".Migration;\n" +
+                "import " + libPackageName + ".MigrationAnnotation;\n" +
+                // 类注解（包含自动生成的timestamp）
+                "@MigrationAnnotation\n" +
+                "public class " + classFileName + " extends Migration {\n\n" +
+                "    public String tableName=\"" + tableName + "\";\n" +
+                "    public String className=\"" + className + "\";\n" +
+                "    @Override\n" +
+                // up()方法（创建/修改表）
+                "    public void up() {\n" +
+                // 创建表的逻辑（默认生成id、created_at、updated_at字段）
+                "        schema.create(tableName, table -> {\n" +
+                "            table.id();\n" +
+                "            // 在这里添加字段定义\n" +
+                "            // 示例：table.string(\"name\").nullable();\n" +
+                "            table.timestamps();\n" +
+                "        });\n" +
+                "    }\n\n" +
 
-        // 类注解（包含自动生成的timestamp）
-        StringBuilder classSb = new StringBuilder();
-        classSb.append("@MigrationAnnotation\n");
-        classSb.append("public class ").append(classFileName).append(" extends Migration {\n\n");
-        classSb.append("    public String tableName=\"").append(tableName).append("\";\n");
-        classSb.append("    public String className=\"").append(className).append("\";\n");
-        // up()方法（创建/修改表）
-        classSb.append("    @Override\n");
-        classSb.append("    public void up() {\n");
-        // 创建表的逻辑（默认生成id、created_at、updated_at字段）
-        classSb.append("        schema.create(tableName, table -> {\n");
-        classSb.append("            table.id();\n");
-        classSb.append("            // 在这里添加字段定义\n");
-        classSb.append("            // 示例：table.string(\"name\").nullable();\n");
-        classSb.append("            table.timestamps();\n");
-        classSb.append("        });\n");
-
-        classSb.append("    }\n\n");
-
-        // down()方法（删除/回滚表）
-        classSb.append("    @Override\n");
-        classSb.append("    public void down() {\n");
-        // 创建表的回滚：删除表
-        classSb.append("        schema.dropIfExists(tableName);\n");
-        classSb.append("    }\n");
-        classSb.append("}");
-
-        return importSb.append(classSb).toString();
+                "    @Override\n" +
+                // down()方法（删除/回滚表）
+                "    public void down() {\n" +
+                // 创建表的回滚：删除表
+                "        schema.dropIfExists(tableName);\n" +
+                "    }\n" +
+                "}";
     }
 }

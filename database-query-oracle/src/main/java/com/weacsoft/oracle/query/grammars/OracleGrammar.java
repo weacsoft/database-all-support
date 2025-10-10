@@ -20,13 +20,13 @@ public class OracleGrammar extends BaseGrammar {
     protected List<SQLPartInfo> getDefault(SQLPartType type) {
         switch (type) {
             case TABLE:
-                return Collections.singletonList(this.simpleInstanceSQLPartInfo(this.symbol + this.alias.getTable() + this.symbol, (Collection) null));
+                return Collections.singletonList(this.simpleInstanceSQLPartInfo(this.symbol + this.alias.getTable() + this.symbol, null));
             case FROM:
-                return Collections.singletonList(this.simpleInstanceSQLPartInfo(this.symbol + this.alias.getTable() + this.symbol + " as " + this.symbol + this.alias + this.symbol, (Collection) null));
+                return Collections.singletonList(this.simpleInstanceSQLPartInfo(this.symbol + this.alias.getTable() + this.symbol + " as " + this.symbol + this.alias + this.symbol, null));
             case SELECT:
-                return Collections.singletonList(this.simpleInstanceSQLPartInfo("*", (Collection) null));
+                return Collections.singletonList(this.simpleInstanceSQLPartInfo("*", null));
             case VALUE:
-                return Collections.singletonList(this.simpleInstanceSQLPartInfo(" values ()", (Collection) null));
+                return Collections.singletonList(this.simpleInstanceSQLPartInfo(" values ()", null));
             default:
                 return null;
         }
