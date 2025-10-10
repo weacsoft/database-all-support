@@ -90,11 +90,13 @@ public class ClassSchema extends BaseSchema {
         source.append("import ").append("gaarason.database.contract.eloquent.Builder;\n");
         source.append("import ").append("gaarason.database.eloquent.Model;\n");
         source.append("import ").append("gaarason.database.query.MySqlBuilder;\n");
+        source.append("import ").append("org.springframework.context.annotation.Lazy;\n");
         source.append("import ").append("jakarta.annotation.Resource;\n");
         source.append("import ").append("java.time.LocalDateTime;\n");
         source.append("\n");
         source.append("abstract public class BaseModel<T, K> extends Model<MySqlBuilder<T, K>, T, K> {\n");
         source.append("    @Resource\n");
+        source.append("    @Lazy\n");
         source.append("    private GaarasonDataSource gaarasonDataSource;\n");
         source.append("    @Override\n");
         source.append("    public GaarasonDataSource getGaarasonDataSource() {\n");
@@ -183,7 +185,9 @@ public class ClassSchema extends BaseSchema {
         if (column.length > 0) {
             source.append(", length = ").append(column.length);
         }
-        source.append(", comment = \"").append(column.comment).append("\"");
+        if (column.comment != null) {
+            source.append(", comment = \"").append(column.comment).append("\"");
+        }
         if (column.type.contains("UNSIGNED")) {
             source.append(", unsigned = true");
         } else if (column.type.contains("TIMESTAMP")) {
