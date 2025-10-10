@@ -60,9 +60,9 @@ public class ClassSchema extends BaseSchema {
 
     /**
      * 保存文件
-     *
-     * @param className
-     * @param sourceCode
+     * @param path 路径
+     * @param className 类名
+     * @param sourceCode 源码
      */
     private void saveFile(String path, String className, String sourceCode) {
         File dir = new File(outputDir + "/" + packageName.replace(".", "/") + "/" + path);
@@ -84,45 +84,43 @@ public class ClassSchema extends BaseSchema {
 
     //生成默认模型
     public String generateBaseModelClass() {
-        StringBuilder source = new StringBuilder();
-        source.append("package ").append(packageName).append(".base").append(";\n\n");
-        source.append("import ").append("gaarason.database.contract.connection.GaarasonDataSource;\n");
-        source.append("import ").append("gaarason.database.contract.eloquent.Builder;\n");
-        source.append("import ").append("gaarason.database.eloquent.Model;\n");
-        source.append("import ").append("gaarason.database.query.MySqlBuilder;\n");
-        source.append("import ").append("org.springframework.context.annotation.Lazy;\n");
-        source.append("import ").append("jakarta.annotation.Resource;\n");
-        source.append("import ").append("java.time.LocalDateTime;\n");
-        source.append("\n");
-        source.append("abstract public class BaseModel<T, K> extends Model<MySqlBuilder<T, K>, T, K> {\n");
-        source.append("    @Resource\n");
-        source.append("    @Lazy\n");
-        source.append("    private GaarasonDataSource gaarasonDataSource;\n");
-        source.append("    @Override\n");
-        source.append("    public GaarasonDataSource getGaarasonDataSource() {\n");
-        source.append("        return gaarasonDataSource;\n");
-        source.append("    }\n");
-        source.append("    @Override\n");
-        source.append("    public int delete(Builder<?, T, K> builder) {\n");
-        source.append("        return softDeleting() ? softDelete(builder) : builder.forceDelete();\n");
-        source.append("    }\n");
-        source.append("    public int restore(Builder<?, T, K> builder) {\n");
-        source.append("        return softDeleteRestore(builder);\n");
-        source.append("    }\n");
-        source.append("    protected void scopeSoftDeleteOnlyTrashed(Builder<?, T, K> builder) {\n");
-        source.append("        builder.whereNotNull(\"deleted_at\");\n");
-        source.append("    }\n");
-        source.append("    protected void scopeSoftDelete(Builder<?, T, K> builder) {\n");
-        source.append("        builder.whereNull(\"deleted_at\");\n");
-        source.append("    }\n");
-        source.append("    protected int softDelete(Builder<?, T, K> builder) {\n");
-        source.append("        return builder.data(\"deleted_at\", LocalDateTime.now()).update();\n");
-        source.append("    }\n");
-        source.append("    protected int softDeleteRestore(Builder<?, T, K> builder) {\n");
-        source.append("        return builder.data(\"deleted_at\", null).update();\n");
-        source.append("    }\n");
-        source.append("}");
-        return source.toString();
+        return "package " + packageName + ".base" + ";\n\n" +
+                "import " + "gaarason.database.contract.connection.GaarasonDataSource;\n" +
+                "import " + "gaarason.database.contract.eloquent.Builder;\n" +
+                "import " + "gaarason.database.eloquent.Model;\n" +
+                "import " + "gaarason.database.query.MySqlBuilder;\n" +
+                "import " + "org.springframework.context.annotation.Lazy;\n" +
+                "import " + "jakarta.annotation.Resource;\n" +
+                "import " + "java.time.LocalDateTime;\n" +
+                "\n" +
+                "abstract public class BaseModel<T, K> extends Model<MySqlBuilder<T, K>, T, K> {\n" +
+                "    @Resource\n" +
+                "    @Lazy\n" +
+                "    private GaarasonDataSource gaarasonDataSource;\n" +
+                "    @Override\n" +
+                "    public GaarasonDataSource getGaarasonDataSource() {\n" +
+                "        return gaarasonDataSource;\n" +
+                "    }\n" +
+                "    @Override\n" +
+                "    public int delete(Builder<?, T, K> builder) {\n" +
+                "        return softDeleting() ? softDelete(builder) : builder.forceDelete();\n" +
+                "    }\n" +
+                "    public int restore(Builder<?, T, K> builder) {\n" +
+                "        return softDeleteRestore(builder);\n" +
+                "    }\n" +
+                "    protected void scopeSoftDeleteOnlyTrashed(Builder<?, T, K> builder) {\n" +
+                "        builder.whereNotNull(\"deleted_at\");\n" +
+                "    }\n" +
+                "    protected void scopeSoftDelete(Builder<?, T, K> builder) {\n" +
+                "        builder.whereNull(\"deleted_at\");\n" +
+                "    }\n" +
+                "    protected int softDelete(Builder<?, T, K> builder) {\n" +
+                "        return builder.data(\"deleted_at\", LocalDateTime.now()).update();\n" +
+                "    }\n" +
+                "    protected int softDeleteRestore(Builder<?, T, K> builder) {\n" +
+                "        return builder.data(\"deleted_at\", null).update();\n" +
+                "    }\n" +
+                "}";
     }
 
     public String generateModelClass(String tableName, String className, List<Column> columns) {
