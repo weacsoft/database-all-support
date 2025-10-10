@@ -15,7 +15,7 @@ public class SqliteBuilder<T, K> extends AbstractBuilder<SqliteBuilder<T, K>, T,
 
     @Override
     public String supportBackQuote(String s) {
-        return FormatUtils.backQuote(s, "'");
+        return FormatUtils.backQuote(s, "\"");
     }
 
     @Override
