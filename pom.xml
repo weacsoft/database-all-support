@@ -19,7 +19,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <database-all.version>[6.0.0,)</database-all.version>
+        <database-all.version>[6.0.0,6.0.1),(6.0.1,6.1.1),(6.1.1,6.2.0),(6.2.1,6.4.0),(6.4.1,6.4.2],[6.4.2,6.4.3),(6.4.3,6.5.2),(6.5.2,6.5.4),(6.5.4,]</database-all.version>
     </properties>
 
     <repositories>
@@ -41,6 +41,29 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <version>3.6.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>resolve-valid-deps</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            &lt;!&ndash; 改用list目标（支持更多容错参数），替代resolve &ndash;&gt;-->
+<!--                            <goal>list</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            &lt;!&ndash; list目标的合法参数：缺失构件时不失败 &ndash;&gt;-->
+<!--                            <failOnMissingArtifact>false</failOnMissingArtifact>-->
+<!--                            &lt;!&ndash; 只显示有有效文件的依赖 &ndash;&gt;-->
+<!--                            <includeMissing>false</includeMissing>-->
+<!--                            &lt;!&ndash; 仅解析运行时依赖，加快速度 &ndash;&gt;-->
+<!--                            <scope>runtime</scope>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
