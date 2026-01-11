@@ -6,10 +6,7 @@ import com.weacsoft.migration.model.Blueprint;
 import com.weacsoft.migration.model.Migration;
 import com.weacsoft.migration.runner.MigrationRunner;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -92,17 +89,21 @@ public class SQLSchema extends BaseSchema {
      * 迁移前做什么
      */
     public boolean upStart() {
-        List<Map<String, Object>> list = queryList(compiler.showTable());
-        AtomicBoolean hasMigrationTable = new AtomicBoolean(false);
-        list.forEach(stringObjectMap -> stringObjectMap.forEach((key, value) -> {
-            if (value.equals(MIGRATIONS_TABLE)) {
-                hasMigrationTable.set(true);
+//        List<Map<String, Object>> list = queryList(compiler.showTable());
+//        AtomicBoolean hasMigrationTable = new AtomicBoolean(false);
+//        list.forEach(stringObjectMap -> stringObjectMap.forEach((key, value) -> {
+//            if (value.equals(MIGRATIONS_TABLE)) {
+//                hasMigrationTable.set(true);
+//            }
+//        }));
+        try {
+            if (!connection.getMetaData().getTables(null, null, MIGRATIONS_TABLE, null).next()) {
+                //不存在则执行迁移
+                migration.schema = this;
+                migration.up();
             }
-        }));
-        if (!hasMigrationTable.get()) {
-            //不存在则执行迁移
-            migration.schema = this;
-            migration.up();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         //获得最后一个数据
         column = getLast();
